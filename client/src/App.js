@@ -1,8 +1,10 @@
 import axios from "axios";
 import "./App.css";
 import stubs from "./stubs";
+import ReactDOM from 'react-dom';
 import React, { useState, useEffect } from "react";
 import moment from "moment";
+import M from 'materialize-css/dist/js/materialize.min.js'
 
 function App() {
   const [code, setCode] = useState("");
@@ -19,7 +21,10 @@ function App() {
   useEffect(() => {
     const defaultLang = localStorage.getItem("default-language") || "cpp";
     setLanguage(defaultLang);
+    M.AutoInit();
   }, []);
+  
+  
 
   let pollInterval;
 
@@ -99,12 +104,24 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h1>Online Code Compiler</h1>
-      <div>
-        <label>Language:</label>
+    <div>
+      
+      <div className="row nt no-padding">
+        <div className="col m1 hide-on-small-only teal darken-2 nav-left  ">
+
+        </div>
+        <div className="col s12 m11">
+
+        
+      <div className="container">
+      <h2>Online Code Compiler</h2>
+      
+      <div className="divider"></div>
+      <div className="row">
+
+      <div className= "input-field col s12 m5  ">
         <select
-          value={language}
+          value={language} 
           onChange={(e) => {
             const shouldSwitch = window.confirm(
               "Are you sure you want to change language? WARNING: Your current code will be lost."
@@ -117,26 +134,46 @@ function App() {
           <option value="cpp">C++</option>
           <option value="py">Python</option>
         </select>
+        <label>Language:</label>
+      </div>
+      {/* <hr /> */}
+      <br />
+      <div className="col s12 m3 setDefault">
+        <button className="btn" onClick={setDefaultLanguage}>Set Default</button>
+      </div>
+      <div className="col s12 m9 textarea">
+        <textarea
+          value={code}
+          onChange={(e) => {
+            setCode(e.target.value);
+          }}
+        ></textarea>
       </div>
       <br />
-      <div>
-        <button onClick={setDefaultLanguage}>Set Default</button>
+      {/* sun May 09 zoz1 z1:34:zs GMT+OS3O Execution Time: 0.017s */}
+      <div className="col s12 m3">
+        <div className="row">
+          <div className="col s12">
+              <h3 className="">Status : {status}</h3>
+          </div>
+          <div className="col s12">
+              {/* <p className="">{jobId ? `Job ID: ${jobId}` : ""}Job ID : 9324232519913513515913</p> */}
+          </div>
+          <div className="col s12">
+              <p>{renderTimeDetails()} </p><br/>
+                <h6>Output : {output}</h6> 
+          </div>
+        </div>
       </div>
       <br />
-      <textarea
-        rows="20"
-        cols="75"
-        value={code}
-        onChange={(e) => {
-          setCode(e.target.value);
-        }}
-      ></textarea>
-      <br />
-      <button onClick={handleSubmit}>Submit</button>
-      <p>{status}</p>
-      <p>{jobId ? `Job ID: ${jobId}` : ""}</p>
-      <p>{renderTimeDetails()}</p>
-      <p>{output}</p>
+      
+      </div>
+      <div className="col s12 m3 ">
+         <button className="btn-large submit " onClick={handleSubmit}>Submit</button>
+      </div>
+      </div>
+      </div>  
+      </div>
     </div>
   );
 }
